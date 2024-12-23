@@ -1,0 +1,12 @@
+# Ignorar node_modules
+node_modules/
+
+# Archivos de log
+*.log
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos temporales de sistema operativo (Mac, Windows)
+.DS_Store
+Thumbs.db
