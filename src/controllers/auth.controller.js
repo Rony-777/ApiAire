@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sendMail = require ("../service/enviarCorreo");
-const { log } = require("console");
 
 const JWT_SECRET = process.env.JWT_SECRET || 'clave_super_secreta';
 
