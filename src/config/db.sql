@@ -7,6 +7,8 @@ CREATE TABLE usuario(
     id serial NOT NULL,
     nombre VARCHAR(255),
     email VARCHAR(255),
+    reset_token VARCHAR(255),
+    reset_token_expires TIMESTAMP,
     password VARCHAR(128),
     PRIMARY KEY (id)
 );
