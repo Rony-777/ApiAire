@@ -1,12 +1,12 @@
 const db = require("../db")
 
 const cargarAire = async (req, res) => {
-    const {CO_ppm, temp , pm25, fecha } = req.body;
+    const {CO_ppm, temp , pm25} = req.body;
 
     try {
         const insertarAire = await db.query(
-            "INSERT INTO datos_aire (CO_ppm, temp, pm25, fecha_lectura) VALUES ($1, $2, $3, $4) RETURNING *",
-            [CO_ppm, temp, pm25, fecha]
+            "INSERT INTO datos_aire (CO_ppm, temp, pm25, fecha_lectura) VALUES ($1, $2, $3) RETURNING *",
+            [CO_ppm, temp, pm25]
         );
 
         res.status(201).json({ message: 'Registro realizado', data: insertarAire.rows[0] });
