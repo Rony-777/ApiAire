@@ -5,7 +5,7 @@ const cargarAire = async (req, res) => {
 
     try {
         const insertarAire = await db.query(
-            "INSERT INTO datos_aire (CO_ppm, temp, pm25, fecha_lectura) VALUES ($1, $2, $3) RETURNING *",
+            "INSERT INTO datos_aire (CO_ppm, temp, pm25) VALUES ($1, $2, $3) RETURNING *",
             [CO_ppm, temp, pm25]
         );
 
