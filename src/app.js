@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api', require ("./routes/auth.routes"));
+app.use('/api/aire', require ("./routes/aire.routes"));
 
 app.get('/', (req, res) => {
     res.send('¡Hola, mundo desde Express!');

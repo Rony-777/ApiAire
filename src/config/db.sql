@@ -12,3 +12,11 @@ CREATE TABLE usuario(
     password VARCHAR(128),
     PRIMARY KEY (id)
 );
+
+CREATE TABLE datos_aire(
+    id serial PRIMARY KEY,
+    CO_ppm REAL,
+    temp REAL,
+    pm25 REAL,
+    fecha_lectura TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
