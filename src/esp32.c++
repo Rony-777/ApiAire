@@ -2,65 +2,83 @@
 #include <HTTPClient.h>
 #include <DHT.h>
 
-
-#define SENSOR_PIN 33
-#define DHTPIN 32
+#define DHTPIN 33
 #define DHTTYPE DHT11
+#define SENSOR_PIN 32
+#define RL 10.0  // Resistencia de carga en kΩ
+#define VCC 3.3
+
+float Ro = 4.0; 
+
 
 DHT dht(DHTPIN, DHTTYPE);
 
+const char* ssid = "Rony";
+const char* password = "Ronald2025";
+const char* serverURL = "https://apiaire.onrender.com/api/aire/cargar";  // tu endpoint en Render
 
-const char* ssid = "CAIPA2";
-const char* password = "Cristian2022";
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+  WiFi.begin(ssid, password);
 
-void setup(){
-    Serial.begin(115200);
-    delay(1000);
-
-    WiFi.mode(WIFI_STA); //Optional
-    WiFi.begin(ssid, password);
-    Serial.println("\nConnecting");
-
-    while(WiFi.status() != WL_CONNECTED){
-        Serial.print(".");
-        delay(100);
-    }
-    dht.begin();  
-    Serial.println("\nConnected to the WiFi network");
-    Serial.print("Local ESP32 IP: ");
-    Serial.println(WiFi.localIP());
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Conectado a WiFi");
 }
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
+    http.begin(serverURL);
+    http.addHeader("Content-Type", "application/json");
 
-    
-    int sensorValueMQ7 = analogRead(SENSOR_PIN); 
-    float voltage = sensorValueMQ7 * (3.3 / 4095.0);
-    float temperature = dht.readTemperature();
+    float Rs = calcularRs();
+    float ratio = Rs / Ro;
+    float ppm = calcularPPM(ratio);
 
-    if (isnan(temperature)) {
-      Serial.println("Error al leer del sensor DHT11");
-      return;
+    float CO_ppm = ppm;     
+    float temp = dht.readTemperature();      
+    String pm25 = Serial.readStringUntil('\n');
+
+    float = temp-11;
+
+    Serial.println(ppm);
+    Serial.println(temp);
+    Serial.println(pm25);
+
+    String json = "{";
+    json += "\"CO_ppm\":" + String(CO_ppm, 1) + ",";
+    json += "\"temp\":" + String(temp, 1) + ",";
+    json += "\"pm25\":" + pm25;
+    json += "}";
+
+    // Envío del POST
+    int httpResponseCode = http.POST(json);
+
+    Serial.print("Respuesta: ");
+    Serial.println(httpResponseCode);
+
+    http.end();
+    if( httpResponseCode < 0){
+        ESP.restart();
     }
-
-    // Especifica la URL del servidor al que deseas enviar los datos
-    http.begin("http://192.168.20.15:3000/api/aire?co2="+ String(voltage) +"&temp="+ String(temperature));  // Cambia la URL según sea necesario
-
-    // Configura el tipo de contenido
-    int httpCode = http.GET();
-
-    // Verifica el código de respuesta del servidor
-    if (httpCode > 0) {
-      String payload = http.getString();  // Obtiene la respuesta del servidor
-      Serial.println(payload);  // Imprime la respuesta en el monitor serial
-    } else {
-      Serial.println("Error en la solicitud GET");
-    }
-    
-    http.end();  // Finaliza la conexión
   }
 
-  delay(10000);  // Espera 10 segundos antes de hacer otra solicitud
+  delay(15000); // cada 15 segundos
+}
+
+
+float calcularRs() {
+  int sensorValue = analogRead(SENSOR_PIN);
+  float voltage = sensorValue * (VCC / 4095.0);
+  return ((VCC * RL) / voltage) - RL;
+}
+
+float calcularPPM(float ratio) {
+  float m = -0.77;
+  float b = 1.7;
+  return pow(10, (log10(ratio) - b) / m);
 }
