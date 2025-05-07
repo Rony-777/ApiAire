@@ -1,4 +1,5 @@
 const db = require("../db")
+const { getRecomendacion } = require('../helper/recomendacion');
 
 const cargarAire = async (req, res) => {
     const {CO_ppm, temp , pm25} = req.body;
@@ -29,4 +30,27 @@ const verAire = async (req, res) => {
     }
 };
 
-module.exports = {cargarAire, verAire}
+const calidadAire = async (req, res) => {
+    try {
+        const data = await db.query(
+            "SELECT * FROM datos_aire ORDER BY fecha_lectura DESC LIMIT 1;"
+        );
+
+        const iqa = data.rows[0]; 
+
+        
+        const mayorCalidadAire = iqa.pm25 > iqa.co_ppm ? iqa.pm25 : iqa.co_ppm;
+
+        
+
+        res.status(200).json({
+             calidad_aire: mayorCalidadAire,
+             recomendacion:getRecomendacion(mayorCalidadAire)
+             });
+             
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el servidor', error });
+    }
+};
+
+module.exports = {cargarAire, verAire, calidadAire}
