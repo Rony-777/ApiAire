@@ -44,10 +44,11 @@ const calidadAire = async (req, res) => {
         
 
         res.status(200).json({
+             fecha: iqa.fecha_lectura,
              calidad_aire: mayorCalidadAire,
              recomendacion:getRecomendacion(mayorCalidadAire)
              });
-             
+
     } catch (error) {
         res.status(500).json({ message: 'Error en el servidor', error });
     }
