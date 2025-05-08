@@ -21,7 +21,7 @@ const cargarAire = async (req, res) => {
 const verAire = async (req, res) => {
     try {
         const insertarAire = await db.query(
-            "SELECT * FROM datos_aire ORDER BY fecha_lectura DESC"
+            "SELECT * FROM datos_aire ORDER BY fecha_lectura ASC"
         );
 
         res.status(200).json({  data: insertarAire.rows });
