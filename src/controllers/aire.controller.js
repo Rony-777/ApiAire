@@ -45,6 +45,8 @@ const calidadAire = async (req, res) => {
 
         res.status(200).json({
              fecha: iqa.fecha_lectura,
+             co: iqa.co_ppm,
+             pm: iqa.pm25,
              calidad_aire: mayorCalidadAire,
              recomendacion:getRecomendacion(mayorCalidadAire)
              });
