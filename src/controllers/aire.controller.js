@@ -5,7 +5,6 @@ const cargarAire = async (req, res) => {
     const {CO_ppm, temp , pm25} = req.body;
     
     try {
-        await db.query("SET TIME ZONE 'America/Bogota'");
         const insertarAire = await db.query(
             "INSERT INTO datos_aire (CO_ppm, temp, pm25) VALUES ($1, $2, $3) RETURNING *",
             [CO_ppm, (temp-9), pm25]
@@ -21,6 +20,7 @@ const cargarAire = async (req, res) => {
 
 const verAire = async (req, res) => {
     try {
+        await db.query("SET TIME ZONE 'America/Bogota'");
         const insertarAire = await db.query(
             "SELECT * FROM datos_aire ORDER BY fecha_lectura ASC"
         );
