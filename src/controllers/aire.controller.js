@@ -20,9 +20,8 @@ const cargarAire = async (req, res) => {
 
 const verAire = async (req, res) => {
     try {
-        await db.query("SET TIME ZONE 'America/Bogota'");
         const insertarAire = await db.query(
-            "SELECT id, CO_ppm, temp, pm25,fecha_lectura, ((fecha_lectura AT TIME ZONE 'UTC') AT TIME ZONE 'America/Bogota') AS fecha_lectura FROM datos_aire ORDER BY fecha_lectura ASC"
+            "SELECT id, CO_ppm, temp, pm25, ((fecha_lectura AT TIME ZONE 'UTC') AT TIME ZONE 'America/Bogota') AS fecha_lectura FROM datos_aire ORDER BY fecha_lectra ASC"
         );
 
         res.status(200).json({  data: insertarAire.rows });
