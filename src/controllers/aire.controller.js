@@ -21,7 +21,7 @@ const cargarAire = async (req, res) => {
 const verAire = async (req, res) => {
     try {
         const insertarAire = await db.query(
-            "SELECT id, CO_ppm, temp, pm25, (fecha_lectura  AT TIME ZONE 'America/Bogota') AS fecha_bogota FROM datos_aire ORDER BY fecha_bogota ASC"
+            "SELECT id, CO_ppm, temp, pm25, fecha_lectura  AS fecha_bogota FROM datos_aire ORDER BY fecha_bogota ASC"
         );
 
         res.status(200).json({  data: insertarAire.rows });
