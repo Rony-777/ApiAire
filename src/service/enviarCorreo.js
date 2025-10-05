@@ -10,7 +10,7 @@ const sendResetEmail = async (email, asunto , texto) => {
     });
 
     const send = await transporter.sendMail({
-        from: 'calidadAire@Aire_Render.com',
+        from: 'rony893000@gmail.com',
         to: email,
         subject: asunto,
         text: texto
