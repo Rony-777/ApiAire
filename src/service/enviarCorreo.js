@@ -1,25 +1,30 @@
-// src/sendgrid-smtp.js
+// src/sendResetEmail.js
 const nodemailer = require('nodemailer');
 
+// SMTP SendGrid por el puerto 2525 (compatible con Render Free)
 const transporter = nodemailer.createTransport({
   host: 'smtp.sendgrid.net',
-  port: 2525,          // suele estar abierto en PaaS
+  port: 2525,
   secure: false,
-  auth: { user: 'apikey', pass: process.env.SENDGRID_API_KEY }
+  auth: {
+    user: 'apikey', // literal 'apikey'
+    pass: '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' // tu API key
+  },
+  // logs útiles en Render
+  logger: true,
+  debug: true
 });
 
-(async () => {
-  try {
-    await transporter.verify();
-    const info = await transporter.sendMail({
-      from: 'TU_CORREO_VERIFICADO@ejemplo.com', // Single Sender o dominio verificado
-      to: 'destino@correo.com',
-      subject: 'Prueba SMTP 2525',
-      text: 'Hola desde SendGrid SMTP (2525).'
-    });
-    console.log('✅ Enviado:', info.messageId);
-  } catch (err) {
-    console.error('❌ SMTP error:', err.response?.body || err.message);
-    process.exit(1);
-  }
-})();
+const sendResetEmail = async (email, asunto, texto) => {
+  // Asegúrate de que 'from' esté verificado en SendGrid (Single Sender)
+  const info = await transporter.sendMail({
+    from: 'rony893000@gmail.com',
+    to: email,
+    subject: asunto,
+    text: texto
+  });
+  console.log('📧 Enviado:', info.messageId, 'accepted:', info.accepted);
+  return info;
+};
+
+module.exports = sendResetEmail;
