@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer');
     secure: true,         // obligatorio con 465
     auth: {
       user: 'rony893000@gmail.com',
-      pass: 'qkfiyjpuqabukhmv'   // contraseña de aplicación (16 chars)
+      pass: 'qkfi yjpu qabu khmv'   // contraseña de aplicación (16 chars)
     },
     tls: { servername: 'smtp.gmail.com' }, // SNI explícito
     connectionTimeout: 15000,
