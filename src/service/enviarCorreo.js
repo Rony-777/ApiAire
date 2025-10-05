@@ -1,37 +1,39 @@
+// src/mail-test-render.js
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first'); // evita IPv6
+
 const nodemailer = require('nodemailer');
 
-const sendResetEmail = async (email, asunto, texto) => {
+(async () => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,          // STARTTLS
-    secure: false,      // true solo con 465
+    port: 465,            // TLS directo
+    secure: true,         // obligatorio con 465
     auth: {
       user: 'rony893000@gmail.com',
-      pass: 'kcjhfjkyspjdehvl'   // Debe ser "Contraseña de aplicación"
+      pass: 'kcjhfjkyspjdehvl'   // contraseña de aplicación (16 chars)
     },
-    logger: true,       // logs SMTP a consola
+    tls: { servername: 'smtp.gmail.com' }, // SNI explícito
+    connectionTimeout: 15000,
+    socketTimeout: 20000,
+    logger: true,
     debug: true
   });
 
   try {
-    await transporter.verify();   // prueba conexión/credenciales
+    await transporter.verify();
     const info = await transporter.sendMail({
       from: { name: 'Calidad del Aire', address: 'rony893000@gmail.com' },
-      to: email,
-      subject: asunto,
-      text: texto
+      to: 'destino@correo.com',
+      subject: 'Prueba desde Render (465)',
+      text: 'Hola, probando envío SMTP desde Render.'
     });
     console.log('📧 Enviado:', info.messageId, 'accepted:', info.accepted);
   } catch (err) {
     console.error('❌ MAIL ERROR:', {
-      code: err.code,
-      command: err.command,
-      responseCode: err.responseCode,
-      response: err.response,
-      message: err.message
+      code: err.code, command: err.command, responseCode: err.responseCode,
+      response: err.response, message: err.message
     });
-    throw err; // para que lo veas en los logs de Render
+    process.exit(1);
   }
-};
-
-module.exports = sendResetEmail;
+})();
