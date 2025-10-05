@@ -71,7 +71,7 @@ const requestCambiarPassword = async (req, res)=>{
             [token, expires, email]
         );
 
-        const resetLink = `https://68e28babdbfcff000809afbd--calidad-aire.netlify.app/cambiar-contrase%C3%B1a?token=${token}`;
+        const resetLink = `https://68e2ba10fccd910008206a99--calidad-aire.netlify.app/cambiar-contrase%C3%B1a?token=${token}`;
         const asunto = 'Restablece tu contraseña'
         const texto = `Haz clic en este enlace para restablecer tu contraseña: ${resetLink}`
 
