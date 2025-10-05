@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   port: 2525,
   secure: false,
   auth: {
-    user: 'apikey', // 
-    pass: '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' 
+    user: 'apikey', 
+    pass: '' 
   },
   // logs útiles en Render
   logger: true,
