@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { cargarAire, verAire, calidadAire } = require("../controllers/aire.controller")
+const { cargarAire, verAire, calidadAire, verAireFecha } = require("../controllers/aire.controller")
 
 router.post('/cargar', cargarAire)
 router.get('/ver', verAire)
