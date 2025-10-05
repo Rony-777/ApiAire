@@ -2,7 +2,9 @@ const nodemailer = require('nodemailer');
 
 const sendResetEmail = async (email, asunto , texto) => {
     const transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        host: 'smtp.gmail.com',
+        port: 587,        // STARTTLS
+        secure: false, 
         auth: {
             user: 'rony893000@gmail.com',
             pass: 'kcjhfjkyspjdehvl'
@@ -10,7 +12,7 @@ const sendResetEmail = async (email, asunto , texto) => {
     });
 
     const send = await transporter.sendMail({
-        from: 'rony893000@gmail.com',
+        from: { name: 'Calidad del Aire', address: 'rony893000@gmail.com' },
         to: email,
         subject: asunto,
         text: texto

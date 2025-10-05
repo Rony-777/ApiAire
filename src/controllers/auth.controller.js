@@ -75,7 +75,7 @@ const requestCambiarPassword = async (req, res)=>{
         const asunto = 'Restablece tu contraseña'
         const texto = `Haz clic en este enlace para restablecer tu contraseña: ${resetLink}`
 
-        sendMail(email, asunto, texto)
+        sendMail(email, asunto, texto);
 
         res.status(200).json({ message: 'Se ha enviado el enlace para restablecer la contraseña' });
         
