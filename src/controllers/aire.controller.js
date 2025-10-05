@@ -30,6 +30,28 @@ const verAire = async (req, res) => {
     }
 };
 
+const verAireFecha = async (req, res) => {
+  try {
+    const { fecha } = req.query; // 'YYYY-MM-DD'
+    if (!fecha || !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+      return res.status(400).json({ message: "Parámetro 'fecha' requerido con formato YYYY-MM-DD" });
+    }
+
+    const sql = `
+      SELECT id, CO_ppm, temp, pm25, fecha_lectura
+      FROM datos_aire
+      WHERE fecha_lectura::date = $1::date
+      ORDER BY fecha_lectura ASC
+    `;
+    const { rows } = await db.query(sql, [fecha]);
+
+    return res.status(200).json({ date: fecha, count: rows.length, data: rows });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error en el servidor', error: error.message });
+  }
+};
+
+
 const calidadAire = async (req, res) => {
     try {
         const data = await db.query(
@@ -56,4 +78,4 @@ const calidadAire = async (req, res) => {
     }
 };
 
-module.exports = {cargarAire, verAire, calidadAire}
+module.exports = {cargarAire, verAire, calidadAire, verAireFecha}

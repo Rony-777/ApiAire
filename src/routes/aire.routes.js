@@ -3,6 +3,7 @@ const { cargarAire, verAire, calidadAire } = require("../controllers/aire.contro
 
 router.post('/cargar', cargarAire)
 router.get('/ver', verAire)
+router.get('/ver/fecha', verAireFecha)
 router.get('/iqa', calidadAire)
 
 module.exports = router
