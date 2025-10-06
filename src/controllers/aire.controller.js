@@ -10,7 +10,7 @@ const cargarAire = async (req, res) => {
         : Number(pm25);
         const insertarAire = await db.query(
             "INSERT INTO datos_aire (CO_ppm, temp, pm25) VALUES ($1, $2, $3) RETURNING *",
-            [CO_ppm, (temp-9), pm25]
+            [CO_ppm, (temp-9), pm25Val]
         );
         console.log(  insertarAire.rows[0]);
         
