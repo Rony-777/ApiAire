@@ -13,9 +13,9 @@ float Ro = 4.0;
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const char* ssid = "Rony";
-const char* password = "Ronald2025";
-const char* serverURL = "https://apiaire.onrender.com/api/aire/cargar";  // tu endpoint en Render
+const char* ssid = "Rony8";
+const char* password = "12345678";
+const char* serverURL = "https://apiaire-lk31.onrender.com/api/aire/cargar";  // tu endpoint en Render
 
 void setup() {
   Serial.begin(9600);
