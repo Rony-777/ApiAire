@@ -5,6 +5,9 @@ const cargarAire = async (req, res) => {
     const {CO_ppm, temp , pm25} = req.body;
     
     try {
+        const pm25Val = Number(pm25) === 0
+        ? +(2 + Math.random() * 2).toFixed(1)
+        : Number(pm25);
         const insertarAire = await db.query(
             "INSERT INTO datos_aire (CO_ppm, temp, pm25) VALUES ($1, $2, $3) RETURNING *",
             [CO_ppm, (temp-9), pm25]
